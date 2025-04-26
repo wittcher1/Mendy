@@ -1,0 +1,55 @@
+# Arquivo marcado como duplicado lógico pela Mendy
+import os
+import subprocess
+
+def identificar_acao(entrada):
+    comandos_conhecidos = ['ls', 'cd', 'pwd', 'mkdir', 'rm', 'mv', 'cp', 'touch']
+    palavras_chave = ['pasta', 'downloads', 'download', 'arquivos', 'existe', 'tem', 'achar', 'encontrar']
+
+    entrada_baixa = entrada.lower()
+
+    for comando in comandos_conhecidos:
+        if entrada_baixa.startswith(comando):
+            return 'comando'
+
+    for palavra in palavras_chave:
+        if palavra in entrada_baixa:
+            return 'pergunta'
+
+    return 'comando'  # Por padrão, tenta como comando
+
+def pensar_sobre_pergunta(entrada):
+    downloads_path = os.path.expanduser('~/storage/downloads')
+    if os.path.exists(downloads_path):
+        return f"Sim, encontrei a pasta Downloads em: {downloads_path}"
+    else:
+        return "Não encontrei a pasta Downloads. Use o comando: termux-setup-storage"
+
+def executar_comando(entrada):
+    try:
+        resultado = subprocess.check_output(entrada, shell=True, stderr=subprocess.STDOUT)
+        return resultado.decode()
+    except subprocess.CalledProcessError as e:
+        return f"[Erro detectado]\n{e.output.decode()}"
+
+def mendy_loop():
+    print("🖥️  Nova Mendy-Term Iniciada. Digite algo (ou 'exit' para sair).")
+    while True:
+        entrada = input("$ ")
+        if entrada.lower() == 'exit':
+            print("Até logo!")
+            break
+
+        acao = identificar_acao(entrada)
+
+        if acao == 'comando':
+            resposta = executar_comando(entrada)
+        elif acao == 'pergunta':
+            resposta = pensar_sobre_pergunta(entrada)
+        else:
+            resposta = "Não entendi sua solicitação."
+
+        print(resposta)
+
+if __name__ == "__main__":
+    mendy_loop()

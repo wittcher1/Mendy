@@ -1,0 +1,3 @@
+Duplicata lógica: /data/data/com.termux/files/home/Mendy/__pycache__ <-> /data/data/com.termux/files/home/Mendy/modules/__pycache__
+⚠️  Duplicata:   ⟷  
+⚠️  Duplicata:   ⟷  

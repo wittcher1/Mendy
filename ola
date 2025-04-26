@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/bash
+clear
+echo "Sistema Mendy Ninja ativado. Status: OK."
+echo
+echo "Últimas duplicatas únicas encontradas:"
+sort ~/Mendy/.duplicates_found.txt | uniq | tail -n 5
